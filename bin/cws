@@ -1,0 +1,16 @@
+#!/usr/local/bin/bash
+
+export FILE_INPUT=$1
+export FILE_TMP=tmp_$1
+export FILE_TMP2=tmp2_$1
+export FILE_OUPUT=wsp_$1
+export SRC_IP=192.168.1.19
+export SRC_MAC=78:4f:43:51:92:94
+export DEST=192.168.1.19
+export DEST_MAC=78:4f:43:51:92:94
+
+bittwiste -I $FILE_INPUT -O $FILE_TMP -T ip -s $SRC_IP -d $DEST_IP%
+
+bittwiste -I $FILE_TMP -O $FILE_OUPUT -T eth -s $SRC_MAC -d $DEST_MAC
+
+rm -f $FILE_TMP

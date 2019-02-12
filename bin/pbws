@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bittwist -i 1 -l 1 $1
