@@ -2,7 +2,7 @@
 # Load our dotfiles like ~/.bash_prompt, etc…
 #   ~/.extra can be used for settings you don’t want to commit,
 #   Use it to configure your PATH, thus it being first in line.
-for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
+for file in ~/.{extra,bash_prompt,exports,aliases,functions,na,bashmarks}; do
     [ -r "$file" ] && source "$file"
 done
 unset file
@@ -114,3 +114,30 @@ shopt -s nocaseglob;
 
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell;
+
+# Setting PATH for Python 3.7
+# The original version is saved in .bash_profile.pysave
+
+function cheat() {
+  curl cht.sh/$1
+}
+
+# set and change java versions
+function setjdk() {
+  if [ $# -ne 0 ]; then
+    removeFromPath '/System/Library/Frameworks/JavaVM.framework/Home/bin'
+    if [ -n "${JAVA_HOME+x}" ]; then
+      removeFromPath $JAVA_HOME
+    fi
+    export JAVA_HOME=`/usr/libexec/java_home -v $@`
+    export PATH=$JAVA_HOME/bin:$PATH
+  fi
+}
+
+removeFromPath () {
+    export PATH=$(echo $PATH | sed -E -e "s;:$1;;" -e "s;$1:?;;")
+}
+
+export JAVA_HOME=`/usr/libexec/java_home -v 11`
+export PATH=$JAVA_HOME/bin:~/bin:$PATH
+

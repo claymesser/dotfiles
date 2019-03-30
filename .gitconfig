@@ -16,6 +16,7 @@
 [core]
 	excludesfile = ~/.gitignore
 	attributesfile = ~/.gitattributes
+	editor = vi
 
 [pager]
 	# insanely beautiful diffs ==> npm install -g diff-so-fancy
@@ -85,3 +86,6 @@
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+[user]
+	name = Clay Messer
+	email = clay.messer@gmail.com

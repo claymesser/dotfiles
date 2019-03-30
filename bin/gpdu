@@ -1,0 +1,7 @@
+#!/bin/bash
+
+pushd ~/Test/icm
+
+./start-generator $1  UNICAST 3000 127.0.0.1 $2
+
+popd

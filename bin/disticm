@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd ~/Dist
+
+rm -Rf icm
+cp -R ~/Projects/icm/build/install/ .

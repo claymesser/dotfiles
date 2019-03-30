@@ -20,6 +20,7 @@ alias hosts='sudo $EDITOR /etc/hosts'   # yes I occasionally 127.0.0.1 twitter.c
 
 alias ag='ag -f --hidden'
 
+alias checkports='netstat -atn | grep LISTEN'
 alias cls='clear'
 
 ###
@@ -75,8 +76,8 @@ alias diskspace_report="df -P -kHl"
 alias free_diskspace_report="diskspace_report"
 
 # Shortcuts
-alias g="git"
-alias v="vim"
+#alias g="git"
+#alias v="vim"
 alias ungz="gunzip -k"
 
 # File size
@@ -94,3 +95,23 @@ alias emptytrash=" \
 # Update installed Ruby gems, Homebrew, npm, and their installed packages
 alias brew_update="brew -v update; brew upgrade --force-bottle --cleanup; brew cleanup; brew cask cleanup; brew prune; brew doctor; npm-check -g -u"
 alias update_brew_npm_gem='brew_update; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update --no-document'
+
+# Start http server in current directory
+alias httpsrv='python -m SimpleHTTPServer 8080'
+
+# Java version aliases
+alias j11="jenv global 11.0; java -version"
+alias j10="jenv global 10.0; java -version"
+alias j9="jenv global 9.0; java -version"
+alias j8="jenv global 1.8; java -version"
+alias j7="jenv global 1.7; java -version"
+
+# Gradle shortcut
+alias gr="gradle"
+alias gw="./gradlew"
+
+alias icm="cd ~/Projects/icm"
+
+# java_home
+alias jh="/usr/libexec/java_home"
+
