@@ -1,0 +1,134 @@
+#!/bin/bash
+
+mdc() { mkdir -p -- "$1" && cd -P -- "$1"; } 
+
+# find shorthand
+function f() {
+	find . -name "$1" 2>&1 | grep -v 'Permission denied'
+}
+
+# Start an HTTP server from a directory, optionally specifying the port
+function server() {
+	local port="${1:-8000}"
+	open "http://localhost:${port}/" &
+	# statik is good because it won't expose hidden folders/files by default.
+	# npm install -g statik
+	statik --port "$port" .
+}
+
+# preview csv files. source: http://stackoverflow.com/questions/1875305/command-line-csv-viewer
+function csvpreview(){
+      sed 's/,,/, ,/g;s/,,/, ,/g' "$@" | column -s, -t | less -#2 -N -S
+}
+
+# Extract archives - use: extract <file>
+# Based on http://dotfiles.org/~pseup/.bashrc
+function extract() {
+	if [ -f "$1" ] ; then
+		local filename=$(basename "$1")
+		local foldername="${filename%%.*}"
+		local fullpath=`perl -e 'use Cwd "abs_path";print abs_path(shift)' "$1"`
+		local didfolderexist=false
+		if [ -d "$foldername" ]; then
+			didfolderexist=true
+			read -p "$foldername already exists, do you want to overwrite it? (y/n) " -n 1
+			echo
+			if [[ $REPLY =~ ^[Nn]$ ]]; then
+				return
+			fi
+		fi
+		mkdir -p "$foldername" && cd "$foldername"
+		case $1 in
+			*.tar.bz2) tar xjf "$fullpath" ;;
+			*.tar.gz) tar xzf "$fullpath" ;;
+			*.tar.xz) tar Jxvf "$fullpath" ;;
+			*.tar.Z) tar xzf "$fullpath" ;;
+			*.tar) tar xf "$fullpath" ;;
+			*.taz) tar xzf "$fullpath" ;;
+			*.tb2) tar xjf "$fullpath" ;;
+			*.tbz) tar xjf "$fullpath" ;;
+			*.tbz2) tar xjf "$fullpath" ;;
+			*.tgz) tar xzf "$fullpath" ;;
+			*.txz) tar Jxvf "$fullpath" ;;
+			*.zip) unzip "$fullpath" ;;
+			*) echo "'$1' cannot be extracted via extract()" && cd .. && ! $didfolderexist && rm -r "$foldername" ;;
+		esac
+	else
+		echo "'$1' is not a valid file"
+	fi
+}
+
+# [Create and] open project todo
+# If you don't pass a name as an argument, it's pulled from the directory name
+td() {
+	if [[ -n $1 ]]; then
+		proj=$1
+		todofile=$proj.taskpaper
+	else
+		proj=${PWD##*/}
+		todofile=$proj.taskpaper
+		todofile=${todofile#.}
+	fi
+	if [ ! -e $todofile ]; then
+		touch $todofile
+		echo -e "Inbox:\n$proj:\n\tNew Features:\n\tIdeas:\n\tBugs:\nArchive:\nSearch Definitions:\n\tTop Priority @search(@priority = 5 and not @done)\n\tHigh Priority @search(@priority > 3 and not @done)\n\tMaybe @search(@maybe)\n\tNext @search(@na and not @done and not project = \"Archive\")\n" >> $todofile
+	fi
+	open -a TaskPaper $todofile
+}
+
+bak() {
+	if [ -f "$1" ] ; then
+		cp $1{,.bak}
+	fi
+}
+
+icm() {
+  cd ~/Projects/icm
+
+  if (( ${+1} )); then 
+    if [[ $1 = rt ]]; then 
+      ./gradlew runtime
+    elif [[ $1 = rtz ]]; then
+      ./gradlew runtimeZip
+    elif [[ $1 = jp ]]; then
+      ./gradlew jpackage
+    else
+      ./gradlew $1
+    fi
+  fi
+}
+
+docs() {
+  cd ~/Projects/icm-docs
+
+  if (( ${+1} )); then
+    if [[ $1 = code ]]; then
+      code .
+    else
+      yarn $1
+    fi
+  fi
+}
+setdns() {
+  # default to dhcp provided dns
+  dns='empty'
+
+  if (( ${+1} )); then 
+    if [[ $1 = cf ]]; then 
+      dns=1.1.1.1
+    elif [[ $1 = google ]]; then 
+      dns=8.8.8.8
+    else
+      dns=$1
+    fi
+  fi
+  echo "Changing DNS to $dns"
+
+  sudo networksetup -setdnsservers Wi-Fi $dns 
+  sudo networksetup -setdnsservers 'Thunderbolt Ethernet Slot 0' $dns 
+}
+
+showdns() {
+  scutil --dns
+}
+

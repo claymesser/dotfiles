@@ -1,0 +1,43 @@
+# Dotbot config
+# https://github.com/anishathalye/dotbot
+# Inspired by https://josnun.github.io/posts/managing-dotfiles-and-zsh-with-dotbot-and-antigen/
+
+# install.conf.yaml
+- defaults:
+    link:
+      relink: true
+      create: true
+
+- clean: ['~']
+
+- create:
+  - ~/.vim
+  - ~/.config/nvim
+
+- link:
+  # Shell
+  ~/.zshrc: shell/.zshrc
+  ~/.aliases: shell/.aliases
+  ~/.functions: shell/.functions
+  ~/.prompt: shell/.prompt
+
+  # Git
+  ~/.gitconfig: git/.gitconfig
+  ~/.gitignore: git/.gitignore
+  
+  # Vim
+  ~/.vimrc: vim/.vimrc
+  ~/.config/nvim/init.vim: vim/nvim/init.vim
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+  - [git config --global core.excludesFile '~/.gitignore', Set global .gitignore]
+
+- brew:
+  - antigen
+  - bat
+  - exa
+  - neovim
+  - pygments
+  - diff-so-fancy
+  - tmux
