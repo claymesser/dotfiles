@@ -3,41 +3,54 @@
 # Inspired by https://josnun.github.io/posts/managing-dotfiles-and-zsh-with-dotbot-and-antigen/
 
 # install.conf.yaml
+
 - defaults:
     link:
-      relink: true
-      create: true
+        relink: true
+        create: true
 
 - clean: ['~']
 
 - create:
-  - ~/.vim
-  - ~/.config/nvim
+    - ~/.vim
 
 - link:
-  # Shell
-  ~/.zshrc: shell/.zshrc
-  ~/.aliases: shell/.aliases
-  ~/.functions: shell/.functions
-  ~/.prompt: shell/.prompt
+    # shell
+    ~/.zshrc: shell/zshrc
+    ~/.zshenv: shell/zshenv
+    ~/.aliases: shell/aliases
+    ~/.functions: shell/functions
+    ~/.prompt: shell/prompt
+    ~/.wvim: shell/wvim
+    ~/bin: shell/bin
+      
+    # git
+    ~/.gitconfig: git/gitconfig
+    ~/.gitignore: git/gitignore
 
-  # Git
-  ~/.gitconfig: git/.gitconfig
-  ~/.gitignore: git/.gitignore
-  
-  # Vim
-  ~/.vimrc: vim/.vimrc
-  ~/.config/nvim/init.vim: vim/nvim/init.vim
+    #tmux
+    ~/.tmux.conf: tmux/tmux.conf
+
+    # vim
+    ~/.vimrc: vim/vimrc
+    # ~/.config/nvim: nvim
+
+    # astronvim user files
+    ~/.config/nvim/lua/user/init.lua astronvim/init.lua 
 
 - shell:
-  - [git submodule update --init --recursive, Installing submodules]
-  - [git config --global core.excludesFile '~/.gitignore', Set global .gitignore]
+    - [git submodule update --init --recursive, Installing submodules]
+    - [git config --global core.excludesFile '~/.gitignore', Set global .gitignore]
 
-- brew:
-  - antigen
-  - bat
-  - exa
-  - neovim
-  - pygments
-  - diff-so-fancy
-  - tmux
+# - brew:
+#    - antigen
+#    - bat
+#    - exa
+#    - neovim
+#    - pygments
+#    - diff-so-fancy
+#    - tmux
+#    - tldr
+#    - fd
+#    - fzf
+

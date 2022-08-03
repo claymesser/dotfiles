@@ -5,7 +5,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-    let need_to_install_plugins = 1
+   let need_to_install_plugins = 1
 endif
 
 call plug#begin()
@@ -29,23 +29,30 @@ Plug 'airblade/vim-gitgutter'
 " Status bar
 Plug 'itchyny/lightline.vim'
 
-" Nord theme
+
+" Themes
 Plug 'arcticicestudio/nord-vim'
+" Plug 'EdenEast/nightfox.nvim'
+Plug 'sonph/onehalf'
+Plug 'cocopon/iceberg.vim'
 
 " Tabs
 Plug 'ap/vim-buftabline'
 
+" Alignment
+Plug 'junegunn/vim-easy-align'
+
 " Telescope file finder / picker
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+" Plug 'nvim-lua/popup.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
 
 " neovim language things
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'neovim/nvim-lspconfig'
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'neovim/nvim-lspconfig'
 
 " Nicer LSP UI
-Plug 'glepnir/lspsaga.nvim'
+" Plug 'glepnir/lspsaga.nvim'
 call plug#end()
 
 let mapleader = ","
@@ -61,8 +68,8 @@ if need_to_install_plugins == 1
 endif
 
 " gfiles shortcut
-nnoremap <C-f> <cmd>Telescope find_files<cr>
-nnoremap <C-g> <cmd>Telescope git_files<cr>
+" nnoremap <C-t> <cmd>Telescope find_files<cr>
+" nnoremap <C-g> <cmd>Telescope git_files<cr>
 
 " always show the status bar
 set laststatus=2
@@ -73,6 +80,11 @@ set t_ut=
 
 " turn on line numbering
 set number
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
+:  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
+:augroup END
 
 " sane text files
 set fileformat=unix
@@ -84,7 +96,7 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-" set colorcolumn=80
+set colorcolumn=80
 set viminfo='25,\"50,n~/.viminfo
 set tw=79
 set autoindent
@@ -92,16 +104,6 @@ set smartindent
 
 " clear highlights
 map <leader>h :noh<CR>
-
-" toggle relative numbers
-noremap <leader>r :call ToggleLineNumber()<CR>
-function! ToggleLineNumber()
-    if v:version > 703
-        set norelativenumber!
-    endif
-    set nonumber!
-endfunction
-
 
 " word movement
 imap <S-Left> <Esc>bi
@@ -132,13 +134,15 @@ endfunction
 
 " color scheme
 syntax on
-colorscheme nord
+colorscheme iceberg
+set cursorline
 filetype on
 filetype plugin indent on
 
+
 " lightline
-set noshowmode
-let g:lightline = { 'colorscheme': 'nord' }
+" set noshowmode
+let g:lightline = { 'colorscheme':'iceberg'}
 
 " code folding
 "set foldmethod=indent
@@ -196,6 +200,9 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 
 " tag list
 map <leader>t :TagbarToggle<CR>
+
+nmap <leader>c :lua require('nvim-comment-frame').add_comment()<CR>
+nmap <leader>C :lua require('nvim-comment-frame').add_multiline_comment()<CR>
 
 " copy, cut and paste
 vmap <C-c> "+y

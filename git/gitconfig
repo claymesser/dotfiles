@@ -4,7 +4,7 @@
 
 [init]
 	defaultBranch = main
-	templatedir = ~/.git_template
+  # templatedir = ~/.git_template
 
 [core]
 	excludesFile = ~/.gitignore
@@ -124,6 +124,7 @@
 	cm = commit -m
 	rv = remote -v
 	cb = =
+	adog = log --all --decorate --oneline --graph
 [diff]
 	tool = bc3
 

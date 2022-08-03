@@ -1,0 +1,71 @@
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
+ZSH_BASE=$HOME/Projects/dotfiles
+
+# Update path for homebrew
+export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:~/bin:~/.local/bin:$PATH
+
+source $ZSH_BASE/antigen/antigen.zsh
+
+antigen use oh-my-zsh
+
+# Terminal stuff
+antigen bundle git
+antigen bundle pip
+antigen bundle zsh-navigation-tools
+antigen bundle MichaelAquilina/zsh-you-should-use
+antigen bundle brew
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-history-substring-search
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle z
+
+# Node stuff
+antigen bundle node
+antigen bundle npm
+
+
+# Set the theme
+antigen theme romkatv/powerlevel10k
+
+# Apply the Antigen stuff
+antigen apply
+
+# Set the p10k prompt
+# To customize prompt run `p10k configure` and copy results to .prompt.
+source ~/.prompt
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Source extra files
+for file in ~/.{aliases,functions,prompt,wvim}; do
+    [ -r "$file" ] && source "$file"
+done
+unset file
+
+# Setup for pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PIPENV_PYTHON="$PYENV_ROOT/shims/python"
+export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# Setup jenv for handling multiple java versions
+export PATH=$HOME/.jenv/bin:$PATH
+eval "$(jenv init -)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+bindkey -v
+
+#kOC:wOP:
+# Fig post block. Keep at the bottom of this file.
+#. "$HOME/.fig/shell/zshrc.post.zsh"
+
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+chruby ruby-3.1.2
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"

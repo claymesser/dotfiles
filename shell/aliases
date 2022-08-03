@@ -1,0 +1,80 @@
+# Default vi & vim to nvim (neovim)
+alias vi='vim'
+
+# mv, rm, cp
+alias mv='mv -v'
+alias rm='rm -i -v'
+alias cp='cp -v'
+
+alias less='bat'
+
+alias cask='brew cask'
+
+alias checkports='netstat -atn | grep LISTEN'
+alias ports='lsof -P -iTCP -sTCP:LISTEN'
+alias port='ports | grep'
+alias cls='clear'
+
+alias mkdir="mkdir -pv"
+alias h='history|grep '
+alias f='find . |grep '
+
+# ls and derivatives
+# alias ls='exa --git --group-directories-first --no-user'
+# alias ll='ls -l'
+alias ll='exa --git --group-directories-first --no-user -l'
+alias la='ll -a'
+alias lg='ll --git-ignore'
+alias lt='ll --tree --level 2'
+alias ltg='lt --git-ignore'
+alias ld='ll -d'
+
+alias f='find . |grep '
+alias h='history|grep '
+
+# Networking. IP address, dig, DNS
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+# alias wget="curl -O"
+
+# Recursively delete `.DS_Store` files
+alias cleanup_dsstore="find . -name '*.DS_Store' -type f -ls -delete"
+
+# Shortcuts
+alias ungz="gunzip -k"
+
+# File size
+alias fs="stat -f \"%z bytes\""
+
+# Start http server in current directory
+# alias httpsrv='python -m http.server  8080'
+# alias ws='python -m http.server 8080'
+alias ws='live-server --no-browser'
+
+# java_home
+alias jh="/usr/libexec/java_home"
+
+#alias dock='brightness -d 0x4281106 0.0'
+#alias undock='brightness -d  0x4281106 0.7'
+
+# NPM aliases
+alias nrd='npm run dev'
+alias nrb='npm run build'
+alias nrs='npm run start'
+alias ni='npm install '
+alias nid='npm install -D '
+alias nig='npm install -g '
+
+# Python environment shortcuts
+alias actenv='source venv/bin/activate'
+alias crenv='python -m venv venv'
+
+# rust
+alias rrepl='evcxr'
+
+# Tmux shortcuts
+alias tm='tmux'
+alias tmn='tmux new -s'
+alias tmnd='tmdetached(){ tmux new -s "$@" -d; unset -f tmdetached; }; tmdetached'
+alias tmls='tmux ls'
+alias tma='tmux attach -t'
+alias tmks='tmux kill-session -t'

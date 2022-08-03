@@ -1,5 +1,29 @@
 #!/bin/bash
 
+# source all aliases
+srcaa() {
+    if [ -d ~/.aliases ]; then
+        for f in ~/.aliases/*.sh; do
+            . "$f"
+        done
+    fi
+}
+
+# source all functions
+srcaf() {
+    if [ -d ~/.functions ]; then
+        for f in ~/.functions/*.sh; do
+            . "$f"
+        done
+    fi
+}
+
+# source all
+srcall() {
+    srcaa
+    srcaf
+}
+
 mdc() { mkdir -p -- "$1" && cd -P -- "$1"; } 
 
 # find shorthand
@@ -125,10 +149,52 @@ setdns() {
   echo "Changing DNS to $dns"
 
   sudo networksetup -setdnsservers Wi-Fi $dns 
-  sudo networksetup -setdnsservers 'Thunderbolt Ethernet Slot 0' $dns 
+  sudo networksetup -setdnsservers "Ethernet Adapter (en5)" $dns 
+}
+
+switchdesktop() {
+    typeset -A desktophash
+    desktophash[0]=29
+    desktophash[1]=18
+    desktophash[2]=19
+    desktophash[3]=20
+    desktophash[4]=21
+    desktophash[5]=23
+    desktophash[6]=22
+    desktophash[7]=26
+    desktophash[8]=28
+    desktophash[9]=25
+    desktopkey=${desktophash[$1]}
+    osascript -e "tell application \"System Events\" to key code $desktopkey using control down"
 }
 
 showdns() {
   scutil --dns
 }
 
+nv() {
+  local target="${PWD}"
+  if [ -n "${1}" ]; then
+    target=$(realpath "$1")
+  fi
+
+  local wdir="${target}"
+  if [ -f "${target}" ]; then
+    wdir=$(dirname "${target}")
+  fi
+
+  nohup alacritty --config-file ~/.config/alacritty/alacritty.yml \
+    --working-directory "${wdir}" \
+    -t "nvim - ${target}" \
+    -e $SHELL -lc "nvim ${target}" >/dev/null &
+}
+
+pw() {
+	if [[ -n $1 ]]; then
+    openssl rand -base64 32 | tr -d "=+/" | cut -c1-${1} | pbcopy
+  else
+    openssl rand -base64 32 | tr -d "=+/" | cut -c1-17 | pbcopy
+  fi
+
+  pbpaste 
+}

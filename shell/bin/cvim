@@ -1,0 +1,3 @@
+#!/bin/bash
+
+XDG_DATA_HOME=~/.config/cvim/share XDG_CONFIG_HOME=~/.config/cvim nvim $@
